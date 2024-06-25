@@ -9,6 +9,8 @@
     const totalCarrinho = ref(0);
     const showOptions = reactive({});
 
+    const emit = defineEmits(['upcart']);
+
     async function obterProdutosCarrinho(idUser) {
         // Limpar as estruturas de dados
         productsCart.prod = [];
@@ -82,6 +84,7 @@
         if(data){
             alert('Deletado com sucesso!');
             obterProdutosCarrinho(userCode.value);
+            emit('upcart');
         }
     }
     function calcularCarrinho() {

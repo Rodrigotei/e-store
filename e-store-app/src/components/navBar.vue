@@ -10,7 +10,7 @@
         </div>
         <div class="menu">
             <RouterLink to="/">Home</RouterLink>
-            <RouterLink to="/">Sobre</RouterLink>
+            <RouterLink to="/about">Sobre</RouterLink>
         </div>
     </nav>
 
