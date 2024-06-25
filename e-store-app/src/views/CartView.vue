@@ -102,21 +102,22 @@
     }
     function finish(data){
         const number = 'xxxxxxxxxxxxx';
+        const nameClient = data.nameClient.trim()
         if(productsCart.prod.length > 1){
             let produtos = '*Produtos*: ';
             productsCart.prod.forEach(product=>{
-                produtos += '%0A'+product.nome+'%0APreço: *R$ '+product.preco+'* %0AQuantidade: *'+qtdCart[product.id]+' und*%0A---------------------'
+                produtos += '%0A'+product.nome.trim()+'%0APreço: *R$ '+product.preco+'* %0AQuantidade: *'+qtdCart[product.id]+' und*%0A---------------------'
             })
-            let mensagemTotal = `Olá RT.CODE%0AEste é o meu pedido:%0A${produtos}%0ANome Cliente: *${data.nameClient}*%0AEndereço: ${data.address}, ${data.number}, ${data.district}%0AObservação: ${data.obs}%0ATotal: *R$ ${totalCarrinho.value}*`
+            let mensagemTotal = `Olá RT.CODE%0AEste é o meu pedido:%0A${produtos}%0ANome Cliente: *${nameClient}*%0AEndereço: ${data.address}, ${data.number}, ${data.district}%0AObservação: ${data.obs}%0ATotal: *R$ ${totalCarrinho.value}*`
 
-            window.open(`https://wa.me/${number}?text=${mensagemTotal}`);
+            window.open(`https://wa.me/${number}?text=${mensagemTotal   }`);
 
         }else{
             let produto = '*Produto*: ';
             productsCart.prod.forEach(product=>{
-                produto += '%0A'+product.nome+'%0APreço: *R$ '+product.preco+'* %0AQuantidade: *'+qtdCart[product.id]+' und*%0A---------------------'
+                produto += '%0A'+product.nome.trim()+'%0APreço: *R$ '+product.preco+'* %0AQuantidade: *'+qtdCart[product.id]+' und*%0A---------------------'
             })
-            let mensagemTotal = `Olá RT.CODE%0AEste é o meu pedido:%0A${produto}%0ATotal: *R$ ${totalCarrinho.value}*%0ANome Cliente: *${data.nameClient}*%0AEndereço: ${data.address}, ${data.number}, ${data.district}%0AObservação: ${data.obs}`
+            let mensagemTotal = `Olá RT.CODE%0AEste é o meu pedido:%0A${produto}%0ATotal: *R$ ${totalCarrinho.value}*%0ANome Cliente: *${nameClient}*%0AEndereço: ${data.address}, ${data.number}, ${data.district}%0AObservação: ${data.obs}`
             window.open(`https://wa.me/${number}?text=${mensagemTotal}`);
         }
     }
