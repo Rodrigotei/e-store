@@ -3,6 +3,7 @@
 namespace Api;
 
 use Api\Methods\Carrinho;
+use Api\Methods\User;
 
 class ApplicationPOST
 {
@@ -39,6 +40,21 @@ class ApplicationPOST
             $deleteProduct = $app->deleteProduct($req['idProduto'], $req['idUser']);
             return true;
         }
+        
+        //=================================================================================================================
+                                                    // REQUESTS DASHBOARD
+        //=================================================================================================================
+        if(isset($req['authenticate']) && $req['authenticate'] && isset($req['user']) && isset($req['pass'])){
+            $app = new User;
+            $login = $app->selectUserLogin($req['user'], $req['pass']);
+            if($login){
+                return true;
+            }
+            return false;
+        }
+        
+        
+        //=================================================================================================================
         return 'INVALID REQUEST';
     }
 }
