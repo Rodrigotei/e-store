@@ -1,12 +1,13 @@
 <script setup>
-
+    import { useGlobal } from '@/global';
+    const GlobalVariables = useGlobal();
 </script>
 
 <template>
 
     <nav>
         <div class="logo">
-            <img src="/img/logo.png" alt="" srcset="">
+            <img :src="`${GlobalVariables.apiUrl}/images/img/logo.png`" alt="" srcset="">
         </div>
         <div class="menu">
             <RouterLink to="/">Home</RouterLink>

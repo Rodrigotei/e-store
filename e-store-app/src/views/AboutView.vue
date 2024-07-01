@@ -1,5 +1,6 @@
 <script setup>
-
+    import { useGlobal } from '@/global';
+    const GlobalVariables = useGlobal();
 </script>
 
 <template>
@@ -8,7 +9,7 @@
         <div class="body-about">
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam id debitis aspernatur similique vero doloribus sapiente earum ullam autem qui atque blanditiis aliquam, consequatur sunt eaque quas dolores sint optio!Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam id debitis aspernatur similique vero doloribus sapiente earum ullam autem qui atque blanditiis aliquam, consequatur sunt eaque quas dolores sint optio!Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam id debitis aspernatur similique vero doloribus sapiente earum ullam autem qui atque blanditiis aliquam, consequatur sunt eaque quas dolores sint optio!</p>
             <div class="img">
-                <img src="/img/empresa.jpg" alt="">
+                <img :src="`${GlobalVariables.apiUrl}images/img/empresa.jpg`" alt="foto da empresa">
             </div>
         </div>
     </div>

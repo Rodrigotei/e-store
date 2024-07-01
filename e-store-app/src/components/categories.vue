@@ -1,11 +1,14 @@
 <script setup>
     import { onMounted, reactive } from 'vue';
+    import { useGlobal } from '@/global';
+
+    const GlobalVariables = useGlobal();
     
     //metodo para alterar o objeto usando o reactive POG
     let categories = reactive({'data': []});
     async function getCategories() {
         try{
-            let response = await fetch('http://localhost/e-store/e-store-api/categorias/');
+            let response = await fetch(`${GlobalVariables.apiUrl}categorias/`);
             let data = await response.json();
             if(data.length > 0){
                 setTimeout(()=>{
@@ -31,7 +34,7 @@
         <div class="container-categories" v-if="categories.data && categories.data.length > 0">  
             <router-link v-bind:to="'/products/' + categoria.id" class="categoria-single" 
                         v-for="categoria in categories.data" :key="categoria.id">
-                <img style="width: 120px;" :src="'img/categories/'+ categoria.imagem" alt="" srcset="">
+                <img style="width: 120px;" :src="`${GlobalVariables.apiUrl}images/img/categories/${categoria.imagem}`">
                 <p>{{ categoria.categoria }}</p>
             </router-link>
         </div>    

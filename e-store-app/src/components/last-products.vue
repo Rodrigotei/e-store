@@ -1,10 +1,14 @@
 <script setup>
     import {reactive, onMounted, nextTick } from 'vue';
+    import { useGlobal } from '@/global';
+
+    const GlobalVariables = useGlobal();
+
     let lastProducts = reactive({'data': []});
 
     async function getLastProducts(){
         try{
-            let response = await fetch('http://localhost/e-store/e-store-api/ultimosProdutos/');
+            let response = await fetch(`${GlobalVariables.apiUrl}ultimosProdutos/`);
             let data = await response.json();
             if(data.length > 0){
                 lastProducts.data = data;
@@ -47,7 +51,7 @@
             <div class="swiper">
                 <div class="swiper-wrapper">
                     <router-link v-bind:to="'/productSingle/'+produto.id" class="last-produto-single swiper-slide" v-for="produto in lastProducts.data" v-bind:key="produto.id">
-                        <img :src="'/img/produtos/'+ produto.img">
+                        <img :src="`${GlobalVariables.apiUrl}images/img/produtos/${produto.img}`">
                         <p>{{ produto.nome }}</p>
                         <p><b>R$ {{ produto.preco }}</b></p>
                     </router-link>

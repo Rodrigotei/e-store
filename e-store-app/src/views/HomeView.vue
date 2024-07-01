@@ -1,6 +1,17 @@
 <script setup>
+	import { onMounted } from 'vue';
+	import { useGlobal } from '@/global';
 	import Categories from '@/components/categories.vue';
 	import LastProducts from '@/components/last-products.vue';
+	
+	const GlobalVariables = useGlobal()
+
+	onMounted(() => {
+	const bannerApp = document.querySelector('.banner-app');
+	if (bannerApp) {
+		bannerApp.style.setProperty('--bg-image-url', `url(${GlobalVariables.apiUrl}images/img/bg.jpeg)`);
+	}
+	});
 </script>
 
 <template>
@@ -20,7 +31,7 @@
 		width: 100%;
 		height: 400px;
 		background-color: #111111;
-		background-image: url('/img/bg.jpeg');
+		background-image: var(--bg-image-url);
 		background-repeat: no-repeat;
 		background-size: cover;
 		background-position: right;

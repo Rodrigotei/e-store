@@ -1,7 +1,10 @@
 <script setup>
     import { reactive, ref, onMounted } from 'vue';
+    import { useGlobal } from '@/global';
     import FinishOrder from '@/components/finish-order.vue';
     import LastProducts from '@/components/last-products.vue';
+
+    const GlobalVariables = useGlobal();
 
     const userCode = ref(localStorage.getItem('idUser'));
     const qtdCart = reactive({});
@@ -24,7 +27,7 @@
                 delete showOptions[key];
             }
         }
-        let response = await fetch(`http://localhost/e-store/e-store-api/carrinho/${idUser}`);
+        let response = await fetch(`${GlobalVariables.apiUrl}carrinho/${idUser}`);
         let data = await response.json();
 
         const promises = data.map(element => {
@@ -38,14 +41,14 @@
     }
 
     async function obterProduto(idProduto) {
-        let response = await fetch(`http://localhost/e-store/e-store-api/produtos/${idProduto}`);
+        let response = await fetch(`${GlobalVariables.apiUrl}produtos/${idProduto}`);
         let data = await response.json();
         productsCart.prod.push(data[0]);
     }
 
     async function decreaseQtd(idProduto) {
         if (qtdCart[idProduto] > 1) {
-            let response = await fetch(`http://localhost/e-store/e-store-api/`, {
+            let response = await fetch(`${GlobalVariables.apiUrl}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ 'decreaseQtdProduct': true, 'idProduto': idProduto, 'idUser': userCode.value })
@@ -61,7 +64,7 @@
     }
 
     async function increaseQtd(idProduto) {
-        let response = await fetch(`http://localhost/e-store/e-store-api/`, {
+        let response = await fetch(`${GlobalVariables.apiUrl}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 'increaseQtdProduct': true, 'idProduto': idProduto, 'idUser': userCode.value })
@@ -75,7 +78,7 @@
         }
     }
     async function deleteProduct(id){
-        let response = await fetch('http://localhost/e-store/e-store-api/',{
+        let response = await fetch(`h${GlobalVariables.apiUrl}`,{
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({'deleteProduct':true, 'idProduto':id, 'idUser': userCode.value})
@@ -101,7 +104,7 @@
         showOptions[idProduto] = !showOptions[idProduto];
     }
     function finish(data){
-        const number = 'xxxxxxxxxxxxx';
+        const number = GlobalVariables.numberPhone;
         const nameClient = data.nameClient.trim()
         if(productsCart.prod.length > 1){
             let produtos = '*Produtos*: ';
@@ -132,7 +135,7 @@
         <div class="container-cart" v-if="productsCart.prod.length > 0">
             <div class="product-cart-single" v-for="product in productsCart.prod" v-bind:key="product.id">
                 <header>
-                    <div class="img-product"><img :src="'../img/produtos/'+product.img"></div>
+                    <div class="img-product"><img :src="`${GlobalVariables.apiUrl}images/img/produtos/${product.img}`"></div>
                     <div class="name-product">{{ product.nome }}</div>
                 </header>
                 <div class="inf-product">

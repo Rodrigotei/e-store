@@ -1,13 +1,17 @@
 <script setup>
     import { useRoute } from 'vue-router';
     import { ref, onMounted, reactive } from 'vue';
+    import { useGlobal } from '@/global';
+
+    const GlobalVariables = useGlobal();
+
     const route = useRoute();
     let idCategory = ref(route.params.categoryId);
     let products = reactive({'data': [],'erro': ''});
 
     async function getProducts(id){
         try{
-            let response = await fetch(`http://localhost/e-store/e-store-api/categorias/${id}`);
+            let response = await fetch(`${GlobalVariables.apiUrl}categorias/${id}`);
             let data = await response.json();
             if(data.length > 0){
                 products.data = data; 
@@ -15,6 +19,9 @@
                 products.data = [];
                 products.erro = 'Nenhum produto foi encontrado!',
                 console.log('ERROR: API EMPTY!');
+                setTimeout(()=>{
+                    location.href = '/';
+                }, 1000);
             }
         }catch(error){
             console.log('ERROR: API NOT FOUND!');
@@ -32,7 +39,7 @@
         
         <RouterLink class="produto-single" :to="'/productSingle/'+product.id"
             v-for="product in products.data" v-bind:key="product.id">
-            <div class="img-produto"><img style="width: 90px;" :src="'/img/produtos/'+product.img" alt="img produto"></div>
+            <div class="img-produto"><img style="width: 90px;" :src="`${GlobalVariables.apiUrl}images/img/produtos/${product.img}`" alt="img produto"></div>
             <div class="descricao-produto">
                 <p>{{ product.nome }}</p>
                 <p>{{ product.descricao }}</p>

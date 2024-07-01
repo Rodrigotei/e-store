@@ -1,8 +1,11 @@
 <script setup>
     import { useRoute } from 'vue-router';
     import { ref, onMounted, reactive, nextTick, watch } from 'vue';
+    import { useGlobal } from '@/global';
     import lastProducts from '@/components/last-products.vue';
     import infProducts from '@/components/inf-product.vue';
+
+    const GlobalVariables = useGlobal();
 
     const emit = defineEmits(['upcart']);
     const route = useRoute();
@@ -12,7 +15,7 @@
 
     async function obterProduto(id){
         try{
-            let response = await fetch(`http://localhost/e-store/e-store-api/produtos/${id}`);
+            let response = await fetch(`${GlobalVariables.apiUrl}produtos/${id}`);
             let data = await response.json();
             if(data.length > 0){
                 product.data = data[0]; 
@@ -30,7 +33,7 @@
     }
     async function obterFotosProduto(id){
         try{
-            let response = await fetch(`http://localhost/e-store/e-store-api/fotosProduto/${id}`);
+            let response = await fetch(`${GlobalVariables.apiUrl}fotosProduto/${id}`);
             let data = await response.json();
             if(data.length > 0){
                 imgProduct.img = data; 
@@ -50,7 +53,7 @@
     
     async function addCart(){
         try{
-            let response = await fetch('http://localhost/e-store/e-store-api/',{
+            let response = await fetch(`${GlobalVariables.apiUrl}`,{
                 method: 'POST', 
                 headers:{'Content-Type' : 'application/json'},
                 body: JSON.stringify({'addCart':true, 'idProduct':product.data.id, 'idUser':localStorage.getItem('idUser')})
@@ -84,10 +87,10 @@
                     <div class="swiper mySwiper">
                         <div class="swiper-wrapper">
                             <div class="swiper-slide">
-                                <img :src="'/img/produtos/' + product.data.img" />
+                                <img :src="`${GlobalVariables.apiUrl}images/img/produtos/${product.data.img}`" />
                             </div>
                             <div class="swiper-slide" v-for="imgProduct in imgProduct.img" v-bind:key="imgProduct.id">
-                                <img :src="'/img/produtos/' + imgProduct.foto" />
+                                <img :src="`${GlobalVariables.apiUrl}images/img/produtos/${imgProduct.foto}`" />
                             </div>
                         </div>
                         <div class="swiper-pagination"></div>

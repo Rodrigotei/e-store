@@ -1,12 +1,15 @@
 <script setup>
 	import { RouterView, RouterLink } from 'vue-router';
 	import { ref, onMounted } from 'vue';
+	import { useGlobal } from './global';
 	import NavBar from './components/navBar.vue';
 	import FooterBar from './components/footerBar.vue';
 	
+	const GlobalVariables = useGlobal();
+
 	const quantidadeCarrinho = ref(0);
 	async function obterQuantidadeCarrinho(id){
-		let response = await fetch(`http://localhost/e-store/e-store-api/quantidadeCarrinho/${id}`);
+		let response = await fetch(`${GlobalVariables.apiUrl}quantidadeCarrinho/${id}`);
 		let data = await response.json();
 		quantidadeCarrinho.value = data;
 	}
@@ -25,7 +28,7 @@
 			<RouterView v-on:upcart="updateCart"/>
 		</main>
 		<div class="button-carrinho">
-			<RouterLink to="/cart"><img src="/img/cart.png" alt="carrinho"></RouterLink>
+			<RouterLink to="/cart"><img :src="`${GlobalVariables.apiUrl}/images/img/cart.png`" alt="carrinho"></RouterLink>
 			<p class="qtd-cart">{{ quantidadeCarrinho }}</p>
 		</div>
 		<FooterBar />
