@@ -1,12 +1,14 @@
 <script setup>
 
-	import { ref } from "vue";
+	import { inject, ref } from "vue";
 	
 	const user = ref('');
 	const password = ref('');
-	
+
+	const apiUrl = inject('apiUrl');
+
 	async function acessarConta(){
-		let response = await fetch('http://localhost/e-store/e-store-api/',{
+		let response = await fetch(`${apiUrl}`,{
 			method: 'POST',
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify({'authenticate': true, 'user': user.value, 'pass': password.value})
@@ -62,7 +64,7 @@
 	<div class="container-login">
 		<div class="form">
 			<div class="logo">
-				<img style="width: 200px;" src="http://localhost/e-store/e-store-api/images/img/logo.png" alt="" srcset="">
+				<img style="width: 200px;" :src="`${apiUrl}images/img/logo.png`" alt="" srcset="">
 			</div>
 			<div class="input-group">
 				<input type="text" placeholder="usuário..." v-model="user"/>
