@@ -35,7 +35,7 @@ router.beforeEach((to, from)=>{
     return {name : 'login'}
   }
   if(autenticado && to.name === 'login'){
-    return {name : 'main'}
+    return {path : '/'}
   }
 })
 
