@@ -2,6 +2,5 @@
 </script>
 
 <template>
-    <div>
-    </div>
+    <div>products</div>
 </template>

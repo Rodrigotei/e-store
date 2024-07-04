@@ -6,6 +6,7 @@ use Api\Methods\Adicionais;
 use Api\Methods\Categorias;
 use Api\Methods\Produtos;
 use Api\Methods\Carrinho;
+use Api\Methods\User;
 
 class ApplicationGET
 {
@@ -63,15 +64,10 @@ class ApplicationGET
                     return $res; 
                 }
                 break;
-            case 'adicionais':
-                $app = new Adicionais;
-                if($parameter != null){
-                    $res = $app->selectAdicionais($parameter);
-                    return $res;
-                }else{  
-                    $res = $app->selectAllAdicionais();
-                    return $res;
-                }
+            case 'qtdClientes':
+                $app = new User; 
+                $res = $app->selectAllClients();
+                return $res;
                 break;
             default:
                 echo 'ENDPOINT NOT FOUND';

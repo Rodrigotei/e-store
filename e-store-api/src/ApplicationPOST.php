@@ -8,6 +8,23 @@ use Api\Methods\User;
 class ApplicationPOST
 {
     public function initApp($req = []) {
+        //==================================================================================================
+                                            // CREATE CLIENTE
+        //==================================================================================================
+
+        if (isset($req['createUser']) && $req['createUser'] && isset($req['idUser'])) {
+            $app = new User;
+            $qtdClient = $app->selectClient($req['idUser']);
+            if(count($qtdClient) == 0){
+                $createUser = $app->createClient($req['idUser']);
+                if($createUser){
+                    return true;
+                }
+            }
+        }
+
+        //==================================================================================================
+        
         if (isset($req['addCart']) && $req['addCart'] && isset($req['idProduct']) && isset($req['idUser'])) {
             $qtdProduct = 1;
             $app = new Carrinho;
@@ -52,6 +69,8 @@ class ApplicationPOST
             }
             return false;
         }
+
+        
         
         
         //=================================================================================================================

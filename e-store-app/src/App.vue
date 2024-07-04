@@ -13,12 +13,20 @@
 		let data = await response.json();
 		quantidadeCarrinho.value = data;
 	}
-	onMounted(()=>{
-		obterQuantidadeCarrinho(localStorage.getItem('idUser'));
-	});
 	async function updateCart(){
 		obterQuantidadeCarrinho(localStorage.getItem('idUser'));
 	}
+	async function createClient(idClient){
+		let response = await fetch(`${GlobalVariables.apiUrl}`,{
+			method: 'POST',
+			headers: {'Content-Type': 'application/json'},
+			body: JSON.stringify({'createUser': true, 'idUser': idClient})
+		});
+	}
+	onMounted(()=>{
+		obterQuantidadeCarrinho(localStorage.getItem('idUser'));
+		createClient(localStorage.getItem('idUser'));
+	});
 </script>
 
 <template>

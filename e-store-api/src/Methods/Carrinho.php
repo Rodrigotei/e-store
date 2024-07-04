@@ -67,7 +67,7 @@ class carrinho extends ConnectionDB
             $sql = $this->pdo->prepare('DELETE FROM `carrinho` WHERE `date` < CURDATE()');
             $sql->execute();
             return true;
-        }catch(PDOException){
+        }catch(\PDOException){
             return false;
         }
     }    
