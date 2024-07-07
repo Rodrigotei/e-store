@@ -3,11 +3,12 @@
 namespace Api;
 
 use Api\Methods\Carrinho;
+use Api\Methods\Categorias;
 use Api\Methods\User;
 
 class ApplicationPOST
 {
-    public function initApp($req = []) {
+    public function initApp($req = [], $files = []) {
         //==================================================================================================
                                             // CREATE CLIENTE
         //==================================================================================================
@@ -24,7 +25,11 @@ class ApplicationPOST
         }
 
         //==================================================================================================
-        
+
+        //==================================================================================================
+                                            // REQUESTS APP
+        //==================================================================================================
+
         if (isset($req['addCart']) && $req['addCart'] && isset($req['idProduct']) && isset($req['idUser'])) {
             $qtdProduct = 1;
             $app = new Carrinho;
@@ -59,6 +64,8 @@ class ApplicationPOST
         }
         
         //=================================================================================================================
+
+        //=================================================================================================================
                                                     // REQUESTS DASHBOARD
         //=================================================================================================================
         if(isset($req['authenticate']) && $req['authenticate'] && isset($req['user']) && isset($req['pass'])){
@@ -70,7 +77,37 @@ class ApplicationPOST
             return false;
         }
 
-        
+        if(isset($req['nameCategory']) && isset($files['imgCategory'])){
+            $nameCategory = $req['nameCategory'];
+           
+            $extensaoImg = pathinfo($files['imgCategory']['name'], PATHINFO_EXTENSION);
+            $extensoes_permitidas = array("jpg", "jpeg", "png", "gif", "bmp", "webp", "tiff", "svg");
+            if(in_array($extensaoImg, $extensoes_permitidas)){
+                $localImg = $files['imgCategory']['tmp_name'];
+                $img = explode('.',$files['imgCategory']['name']);
+                $nameImgCategory = $img[0].rand(0,99).'.'.end($img);
+
+                $app = new Categorias;
+                $insertCategory = $app->insertCategory($nameCategory, $nameImgCategory);
+                if($insertCategory){
+                    if(move_uploaded_file($localImg, 'images/img/categories/'.$nameImgCategory)){
+                        return 'Categoria adicionada com sucesso!';
+                    }else{
+                        return 'A categoria foi adicionada, mas houve um problema com a imagem!';
+                    }
+                }
+                return 'Erro ao adicionar!';
+            }
+        }
+
+        if(isset($req['deleteCat']) && $req['deleteCat'] && isset($req['idDelete'])){
+            $app = new Categorias;
+            $deleteCategory = $app->deleteCat($req['idDelete']);
+            if($deleteCategory){
+                return 'A categoria foi excluída com sucesso!';
+            }
+            return 'Erro ao excluir';
+        }
         
         
         //=================================================================================================================

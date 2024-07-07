@@ -27,14 +27,20 @@ switch ($method){
         }
         break;
     case 'POST':
-        $json = file_get_contents('php://input');
-        $data = json_decode($json, true);
-        if (json_last_error() === JSON_ERROR_NONE) {
-            $app = new ApplicationPOST;
-            $response = $app->initApp($data);
-            echo json_encode($response);
-        } else {
-            echo json_encode('Invalid JSON');
+        if(!$_FILES){
+            $json = file_get_contents('php://input');
+            $data = json_decode($json, true);
+            if (json_last_error() === JSON_ERROR_NONE) {
+                $app = new ApplicationPOST;
+                $response = $app->initApp($data);
+                echo json_encode($response);
+            } else {
+                echo json_encode('Invalid JSON');
+            }
+        }else{
+                $app = new ApplicationPOST;
+                $response = $app->initApp($_POST, $_FILES);
+                echo json_encode($response);
         }
         break;
     default:
