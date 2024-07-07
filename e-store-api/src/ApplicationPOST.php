@@ -109,7 +109,38 @@ class ApplicationPOST
             return 'Erro ao excluir';
         }
         
-        
+        if(isset($req['editCategory']) && $req['editCategory']  && isset($req['nameCategory'])&& isset($req['idCategory'])){
+            $app = new Categorias;
+            $deleteCategory = $app->editCategory($req['nameCategory'], $req['idCategory']);
+            if($deleteCategory){
+                return 'Categoria Editada com sucesso!';
+            }
+            return 'Erro ao editar'; 
+        }
+        if(isset($req['nameCategory']) &&isset($req['idCategory']) && isset($files['newImgCategory'])){
+            $nameCategory = $req['nameCategory'];
+            
+            $extensaoImg = pathinfo($files['newImgCategory']['name'], PATHINFO_EXTENSION);
+            $extensoes_permitidas = array("jpg", "jpeg", "png", "gif", "bmp", "webp", "tiff", "svg");
+            if(in_array($extensaoImg, $extensoes_permitidas)){
+                $localImg = $files['newImgCategory']['tmp_name'];
+                $img = explode('.',$files['newImgCategory']['name']);
+                $nameImgCategory = $img[0].rand(0,99).'.'.end($img);
+
+                $app = new Categorias;
+                $insertCategory = $app->updateCategoryImage($nameCategory, $nameImgCategory, $req['idCategory']);
+                if($insertCategory){
+                    if(move_uploaded_file($localImg, 'images/img/categories/'.$nameImgCategory)){
+                        return 'Categoria Editada com sucesso!';
+                    }else{
+                        return 'A categoria foi editada, mas houve um problema com a imagem!';
+                    }
+                }
+                return 'Erro ao editar!';
+            }
+        }
+
+
         //=================================================================================================================
         return 'INVALID REQUEST';
     }

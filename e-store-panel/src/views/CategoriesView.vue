@@ -1,10 +1,15 @@
 <script setup>
-    import { inject, onMounted, reactive } from 'vue';
+    import { inject, onMounted, reactive, ref } from 'vue';
     import AddCategory from '@/components/add-category.vue';
+    import EditCategory from '@/components/edit-category.vue';
     
     const apiUrl = inject('apiUrl');
     const showOptions = reactive({});
-    const categories = reactive({'cat': []})
+    const categories = reactive({'cat': []});
+
+    const showEdit = ref(false);
+    const categoryEdit = reactive({'name': null, 'img': null, 'id': null});
+
 
     function toggleOptions(idcategory) {
         showOptions[idcategory] = !showOptions[idcategory];
@@ -55,6 +60,22 @@
     function showMessageAdd(data){
         showMessageStatus(data.color, data.message);
     }
+    function showMessageEdit(data){
+        showMessageStatus(data.color, data.message);
+    }
+    function openFormEdit(name, img, id){
+        categoryEdit.name = name;
+        categoryEdit.img = img;
+        categoryEdit.id = id
+        showEdit.value = true;
+        showOptions[id] = !showOptions[id];
+    }
+    function closeFormEdit(){
+        categoryEdit.name = null;
+        categoryEdit.img = null;
+        categoryEdit.id = null;
+        showEdit.value = false;
+    }
 
     onMounted(()=>{
         obterCategorias();
@@ -85,7 +106,7 @@
                             <button v-on:click="toggleOptions(category.id)" v-if="showOptions[category.id]"><i class="fa-solid fa-xmark"></i></button>
                             <div class="options" :style="showOptions[category.id] ? { display: 'block' } : { display: 'none' }">
                                 <button v-on:click="deleteCategory(category.id)">Deletar <i class="fa-solid fa-trash"></i></button>
-                                <button v-on:click="toggleOptions(category.id)">Editar <i class="fa-regular fa-pen-to-square"></i></button>
+                                <button v-on:click="openFormEdit(category.categoria, category.imagem, category.id)">Editar <i class="fa-regular fa-pen-to-square"></i></button>
                             </div>
                         </td>
                     </tr>
@@ -93,6 +114,8 @@
             </div>
             <div v-else>Nenhuma categoria foi adicionada!</div>
         </section>
+        <EditCategory v-if="showEdit" :category-edit="categoryEdit" v-on:closeEdit="closeFormEdit" 
+                      v-on:upcat="obterCategorias" v-on:messageStatus="showMessageEdit"/>
     </div>
 </template>
 
@@ -154,7 +177,7 @@
     table .options{
         position: absolute ;
         top: -40px;
-        left: -30px;
+        left: -70px;
         background-color: #fff;
         border: 1px solid black;
     }

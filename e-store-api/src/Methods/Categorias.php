@@ -25,4 +25,14 @@ class Categorias extends ConnectionDB
         $sql->execute(array($idDelete));
         return true;
     }
+    public function editCategory($nameCategory, $id){
+        $sql = $this->pdo->prepare('UPDATE `categorias` SET `categoria` = ? WHERE `id` = ?');
+        $sql->execute(array($nameCategory, $id));
+        return true;
+    }
+    public function     updateCategoryImage($nameCategory, $nameImgCategory, $id){
+        $sql = $this->pdo->prepare('UPDATE `categorias` SET `categoria` = ?, `imagem` = ? WHERE `id` = ?');
+        $sql->execute(array($nameCategory, $nameImgCategory, $id));
+        return true;
+    }
 }
