@@ -1,14 +1,43 @@
 <script setup>
+    import { ref, reactive, inject } from 'vue';  
 
+    const apiUrl = inject('apiUrl');
+
+    const nameCategory = ref('');
+    const imgCategory = reactive({'file':null});
+
+    const emit = defineEmits(['addCat', 'messageStatus']);
+
+    function handleFileChange(event) {
+        const file = event.target.files[0];
+        imgCategory.file = file;
+    }
+    async function addCategory(){
+        if(!nameCategory.value || !imgCategory.file){
+            alert('Insira os dados corretamente');
+            return false;
+        }
+        let form = new FormData();
+        form.append('nameCategory', nameCategory.value);
+        form.append('imgCategory', imgCategory.file);
+        let response = await fetch(`${apiUrl}`,{
+            method: 'POST',
+            body: form
+        })
+        let data = await response.json();
+        emit('addCat');
+        emit('messageStatus', {color: '#1fb302', message: data});
+        nameCategory.value = '';    
+    }
 </script>
 
 <template>
     <div class="add-category">
         <h2>Adicionar Categoria</h2>
         <div class="form">
-            <input type="text" placeholder="Nome da Categoria">
-            <input type="file">
-            <button>Adicionar</button>
+            <input type="text" placeholder="Nome da Categoria" v-model="nameCategory">
+            <input type="file" v-on:change="handleFileChange">
+            <button v-on:click="addCategory()">Adicionar</button>
         </div>
     </div>
 </template>
@@ -43,7 +72,7 @@
     }
     .add-category .form button{
         width: 150px;
-        background-color: #8e6e53;
+        background-color: #804a1d;
         border: none;
         color: #fff;
         padding: 8px 0;
