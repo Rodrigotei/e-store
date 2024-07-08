@@ -4,14 +4,15 @@ namespace Api;
 
 use Api\Methods\Carrinho;
 use Api\Methods\Categorias;
+use Api\Methods\Produtos;
 use Api\Methods\User;
 
 class ApplicationPOST
 {
     public function initApp($req = [], $files = []) {
-        //==================================================================================================
-                                            // CREATE CLIENTE
-        //==================================================================================================
+//===========================================================================================================================================================
+                                                       // CREATE CLIENTE
+//===========================================================================================================================================================
 
         if (isset($req['createUser']) && $req['createUser'] && isset($req['idUser'])) {
             $app = new User;
@@ -24,11 +25,11 @@ class ApplicationPOST
             }
         }
 
-        //==================================================================================================
+//===========================================================================================================================================================
 
-        //==================================================================================================
-                                            // REQUESTS APP
-        //==================================================================================================
+//===========================================================================================================================================================
+                                                       // REQUESTS APP
+//===========================================================================================================================================================
 
         if (isset($req['addCart']) && $req['addCart'] && isset($req['idProduct']) && isset($req['idUser'])) {
             $qtdProduct = 1;
@@ -63,11 +64,11 @@ class ApplicationPOST
             return true;
         }
         
-        //=================================================================================================================
+//===========================================================================================================================================================
 
-        //=================================================================================================================
+//===========================================================================================================================================================
                                                     // REQUESTS DASHBOARD
-        //=================================================================================================================
+//===========================================================================================================================================================
         if(isset($req['authenticate']) && $req['authenticate'] && isset($req['user']) && isset($req['pass'])){
             $app = new User;
             $login = $app->selectUserLogin($req['user'], $req['pass']);
@@ -76,7 +77,7 @@ class ApplicationPOST
             }
             return false;
         }
-
+//=========================================================    PAGE CATEGORIES    ================================================================== 
         if(isset($req['nameCategory']) && isset($files['imgCategory'])){
             $nameCategory = $req['nameCategory'];
            
@@ -111,8 +112,8 @@ class ApplicationPOST
         
         if(isset($req['editCategory']) && $req['editCategory']  && isset($req['nameCategory'])&& isset($req['idCategory'])){
             $app = new Categorias;
-            $deleteCategory = $app->editCategory($req['nameCategory'], $req['idCategory']);
-            if($deleteCategory){
+            $editCategory = $app->editCategory($req['nameCategory'], $req['idCategory']);
+            if($editCategory){
                 return 'Categoria Editada com sucesso!';
             }
             return 'Erro ao editar'; 
@@ -139,7 +140,74 @@ class ApplicationPOST
                 return 'Erro ao editar!';
             }
         }
+//=========================================================    PAGE PRODUCTS    ================================================================== 
+        if(isset($req['nameProduct']) && isset($files['imgProduct']) && isset($req['descProduct']) && isset($req['priceProduct']) && isset($req['idCategory'])){
+            $nameProduct = $req['nameProduct'];
+            $descProduct = $req['descProduct'];
+            $priceProduct = $req['priceProduct'];
+            $idCategory = $req['idCategory'];
+           
+            $extensaoImg = pathinfo($files['imgProduct']['name'], PATHINFO_EXTENSION);
+            $extensoes_permitidas = array("jpg", "jpeg", "png", "gif", "bmp", "webp", "tiff", "svg");
+            if(in_array($extensaoImg, $extensoes_permitidas)){
+                $localImg = $files['imgProduct']['tmp_name'];
+                $img = explode('.',$files['imgProduct']['name']);
+                $nameImgProduct = $img[0].rand(0,99).'.'.end($img);
 
+                $app = new Produtos;
+                $insertProduct = $app->insertProduct($nameProduct, $descProduct, $priceProduct, $nameImgProduct, $idCategory);
+                if($insertProduct){
+                    if(move_uploaded_file($localImg, 'images/img/produtos/'.$nameImgProduct)){
+                        return 'Produto adicionado com sucesso!';
+                    }else{
+                        return 'O Produto foi adicionado, mas houve um problema com a imagem!';
+                    }
+                }
+                return 'Erro ao adicionar!';
+            }else{
+                return 'O arquivo enviado não é uma imagem!';
+            }
+        }
+        if(isset($req['deleteProd']) && $req['deleteProd'] && isset($req['idDelete'])){
+            $app = new Produtos;
+            $deleteProduct = $app->deleteProd($req['idDelete']);
+            if($deleteProduct){
+                return 'O Produto foi excluído com sucesso!';
+            }
+            return 'Erro ao excluir';
+        }
+
+        if(isset($req['editProduct']) && $req['editProduct']  && isset($req['nameProduct']) && isset($req['descProduct']) && isset($req['priceProduct']) && isset($req['idProduct'])){
+            $app = new Produtos;
+            $editProduc = $app->editProduct($req['nameProduct'], $req['descProduct'], $req['priceProduct'], $req['idProduct']);
+            if($editProduc){
+                return 'Produto Editado com sucesso!';
+            }
+            return 'Erro ao editar'; 
+        }
+        
+        if(isset($req['nameProduct']) && isset($req['priceProduct']) && isset($req['descProduct']) && isset($req['idProduct']) && isset($files['imgProduct'])){
+            $nameProduct = $req['nameProduct'];
+            
+            $extensaoImg = pathinfo($files['imgProduct']['name'], PATHINFO_EXTENSION);
+            $extensoes_permitidas = array("jpg", "jpeg", "png", "gif", "bmp", "webp", "tiff", "svg");
+            if(in_array($extensaoImg, $extensoes_permitidas)){
+                $localImg = $files['imgProduct']['tmp_name'];
+                $img = explode('.',$files['imgProduct']['name']);
+                $nameImgProduct = $img[0].rand(0,99).'.'.end($img);
+
+                $app = new Produtos;
+                $editProduct = $app->editProductImg($nameProduct,$req['descProduct'], $req['priceProduct'], $nameImgProduct, $req['idProduct']);
+                if($editProduct){
+                    if(move_uploaded_file($localImg, 'images/img/produtos/'.$nameImgProduct)){
+                        return 'Produto Editado com sucesso!';
+                    }else{
+                        return 'O Produto foi editado, mas houve um problema com a imagem!';
+                    }
+                }
+                return 'Erro ao editar!';
+            }
+        }
 
         //=================================================================================================================
         return 'INVALID REQUEST';
