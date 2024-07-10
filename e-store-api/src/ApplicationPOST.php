@@ -208,8 +208,42 @@ class ApplicationPOST
                 return 'Erro ao editar!';
             }
         }
+//=========================================================    PAGE IMG PRODUCTS    ================================================================== 
+        if (isset($req['productId']) && isset($files['images'])) {
+            $nome = '';
+            for ($i = 0; $i < count($files['images']['name']); $i++) {
+                
+                // Verifica se houve erro no upload do arquivo
+                if ($files['images']['error'][$i] !== UPLOAD_ERR_OK) {
+                    return 'Erro no upload da imagem: ' . $files['images']['name'][$i];
+                }
+                
+                $extensaoImg = pathinfo($files['images']['name'][$i], PATHINFO_EXTENSION);
+                $extensoes_permitidas = array("jpg", "jpeg", "png", "gif", "bmp", "webp", "tiff", "svg");
+                
+                if (in_array($extensaoImg, $extensoes_permitidas)) {
+                    $img = explode('.', $files['images']['name'][$i]);
+                    $localName = $files['images']['tmp_name'][$i];
+                    $nameImg = $img[0] . rand(0, 99) . '.' . end($img);  
+                    
+                    $app = new Produtos;
+                    $editProduct = $app->insertImgProducts($nameImg, intval($req['productId']));
+                    
+                    if ($editProduct) {
+                        if (move_uploaded_file($localName, 'images/img/produtos/' . $nameImg)) {
+                            // Arquivo movido com sucesso
+                        } else {
+                            return 'Erro ao mover o arquivo: ' . $nameImg;
+                        }
+                    }
+                } else {
+                    return 'Extensão de imagem não permitida: ' . $files['images']['name'][$i];
+                }
+            }
+            return 'Imagens do Produto adicionadas com sucesso!';
+        }
 
-        //=================================================================================================================
+//=========================================================================================================================================
         return 'INVALID REQUEST';
     }
 }

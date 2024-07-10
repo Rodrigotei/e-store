@@ -69,6 +69,28 @@ class ApplicationGET
                 $res = $app->selectAllClients();
                 return $res;
                 break;
+            case 'qtdCategorias':
+                $app = new Categorias; 
+                $res = $app->selectCategorias();
+                return $res;
+                break;
+            case 'qtdProdutos':
+                $app = new Produtos; 
+                $res = $app->selectAllProducts();
+                return $res;
+                break;
+            case 'qtdFotosAdicionais':
+                if($parameter != null){
+                    $app = new Produtos; 
+                    $res = $app->selectAddImg($parameter);
+                    return $res;
+                }else{
+                    
+                }
+                $app = new Produtos; 
+                $res = $app->selectAllAddImg();
+                return $res;
+                break;
             default:
                 echo 'ENDPOINT NOT FOUND';
                 exit;

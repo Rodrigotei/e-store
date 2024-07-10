@@ -22,6 +22,7 @@
             <div class="option"><RouterLink to="/">Home</RouterLink></div>
             <div class="option"><RouterLink to="/categories">Categorias</RouterLink></div>
             <div class="option"><RouterLink to="/products">Produtos</RouterLink></div>
+            <div class="option"><RouterLink to="/imgAdd">Fotos Adicionais</RouterLink></div>
 
             <div class="option exit" v-on:click="exitDashboard()">Sair <i class="fa-solid fa-arrow-right-from-bracket"></i></div>
         </div>

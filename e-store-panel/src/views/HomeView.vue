@@ -4,34 +4,60 @@
 
     const apiUrl = inject('apiUrl');
 
-    const qtdClientes = ref(0)
+    const qtdClientes = ref(0);
+    const qtdCategorias = ref(0);
+    const qtdProdutos = ref(0);
+    const qtdFotosAdicionais = ref(0);
 
     async function obterQtdClientsMensal(){
         let response = await fetch(`${apiUrl}qtdClientes`);
         let data = await response.json();
         qtdClientes.value = data;
     }
+    async function obterQtdCategorias(){
+        let response = await fetch(`${apiUrl}qtdCategorias`);
+        let data = await response.json();
+        qtdCategorias.value = data.length;
+    }
+    async function obterQtdProdutos(){
+        let response = await fetch(`${apiUrl}qtdProdutos`);
+        let data = await response.json();
+        qtdProdutos.value = data.length;
+    }
+    async function obterQtdFotosAdicionais(){
+        let response = await fetch(`${apiUrl}qtdFotosAdicionais`);
+        let data = await response.json();
+        qtdFotosAdicionais.value = data.length;
+    }
 
     onMounted(()=>{
         obterQtdClientsMensal();
+        obterQtdCategorias();
+        obterQtdProdutos();
+        obterQtdFotosAdicionais();
     });
 </script>
     
 <template>
     <div class="container">
-        <RouterLink class="box" to="/">
+        <RouterLink class="box">
             <p><i class="fa-solid fa-users"></i></p>
             <p>Acessos Mensal: <b>{{ qtdClientes }}</b></p>
         </RouterLink>
 
         <RouterLink class="box" to="/categories">
             <p><i class="fa-solid fa-layer-group"></i></p>
-            <p>Categorias Cadastradas: <b>10</b></p>
+            <p>Categorias Cadastradas: <b>{{ qtdCategorias }}</b></p>
         </RouterLink>
 
-        <RouterLink class="box" to="products">
+        <RouterLink class="box" to="/products">
             <p><i class="fa-solid fa-bag-shopping"></i></p>
-            <p>Produtos Cadastrados: <b>10</b></p>
+            <p>Produtos Cadastrados: <b>{{ qtdProdutos }}</b></p>
+        </RouterLink>
+
+        <RouterLink class="box" to="/imgAdd">
+            <p><i class="fa-solid fa-bag-shopping"></i></p>
+            <p>Imagens Adicionais: <b>{{ qtdFotosAdicionais }}</b></p>
         </RouterLink>
     </div>
 </template>

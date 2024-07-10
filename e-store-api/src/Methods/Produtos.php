@@ -48,4 +48,22 @@ class Produtos extends ConnectionDB
         $sql->execute(array($name,$desc, $price, $img, $id));
         return true;
     }
+
+    public function selectAllAddImg(){
+        $sql = $this->pdo->prepare('SELECT * FROM `fotos_produto`');
+        $sql->execute();
+        $select = $sql->fetchAll(\PDO::FETCH_ASSOC);
+        return $select;
+    }
+    public function selectAddImg($id){
+        $sql = $this->pdo->prepare('SELECT * FROM `fotos_produto` WHERE `id_produto` = ?');
+        $sql->execute(array($id));
+        $select = $sql->fetchAll(\PDO::FETCH_ASSOC);
+        return $select;
+    }
+    public function     insertImgProducts($nameImg,$idProduct){
+        $sql = $this->pdo->prepare('INSERT INTO `fotos_produto` (`foto`, `id_produto`) VALUES (?,?)');
+        $sql->execute(array($nameImg, $idProduct));
+        return true;
+    }
 }

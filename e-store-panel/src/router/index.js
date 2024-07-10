@@ -11,6 +11,7 @@ const router = createRouter({
         { path: '/', name: 'home', component: ()=> import('../views/HomeView.vue')},
         { path: '/products', name: 'products', component: ()=> import('../views/ProductsView.vue')},
         { path: '/categories', name: 'categories', component: ()=> import('../views/CategoriesView.vue')},
+        { path: '/imgAdd', name: 'addImg', component: ()=> import('../views/ImgAddProductView.vue')}
       ]
     },
     {
