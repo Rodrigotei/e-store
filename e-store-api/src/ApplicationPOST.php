@@ -243,6 +243,15 @@ class ApplicationPOST
             return 'Imagens do Produto adicionadas com sucesso!';
         }
 
+        if(isset($req['deleteImg']) && $req['deleteImg'] && isset($req['idImg'])){
+            $app = new Produtos;
+            $deleteProduct = $app->deleteImg($req['idImg']);
+            if($deleteProduct){
+                return 'A foto foi excluída com sucesso!';
+            }
+            return 'Erro ao excluir';
+        }
+
 //=========================================================================================================================================
         return 'INVALID REQUEST';
     }
