@@ -7,6 +7,8 @@
     const selectedFiles = reactive({'img': null});
     const selectedProduct = ref(0);
 
+    const emit = defineEmits(['insertImg']);
+
     function toggleShow() {
         showForm.value = !showForm.value;
     }
@@ -15,23 +17,23 @@
         selectedFiles.img = Array.from(event.target.files);
     }
     async function addImages() {
+        if(selectedProduct.value == 0 || !selectedFiles.img){
+            alert('Insira os dados corretamente');
+            return false;
+        }
         const formData = new FormData();
         selectedFiles.img.forEach((file) => {
             formData.append('images[]', file);
         });
 
         formData.append('productId', selectedProduct.value);
-
-        //try {
-            let response = await fetch(`${apiUrl}`, {
-                method: 'POST',
-                body: formData
-            });
-            let result = await response.json();
-            console.log(result)
-        // } catch (error) {
-        //     console.error('Error uploading images:', error);
-        // }
+        let response = await fetch(`${apiUrl}`, {
+            method: 'POST',
+            body: formData
+        });
+        let result = await response.json();
+        let data = {color: '#1fb302', message: result, id_product: selectedProduct.value};
+        emit('insertImg', data);
     }
 
     async function getProducts() {

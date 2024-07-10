@@ -56,7 +56,7 @@
         </RouterLink>
 
         <RouterLink class="box" to="/imgAdd">
-            <p><i class="fa-solid fa-bag-shopping"></i></p>
+            <p><i class="fa-regular fa-image"></i></p>
             <p>Imagens Adicionais: <b>{{ qtdFotosAdicionais }}</b></p>
         </RouterLink>
     </div>
