@@ -7,7 +7,7 @@
         showMenu.value = !showMenu.value; 
     }
     function exitDashboard(){
-        document.cookie = 'logado=true; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        document.cookie = 'logado=true; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
         location.reload();
     }
 </script>

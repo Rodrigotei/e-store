@@ -96,11 +96,11 @@
         </div>
         <AddProduct v-if="showFormAdd" @addProd="obterProdutos()" @messageStatus="showMessageAdd" />
         <section class="view-products">
-            <h2>Categorias Adicionadas</h2>
+            <h2>Produtos Adicionados</h2>
             <div class="table" v-if="products">
                 <table>
                     <tr>
-                        <th>ID</th>
+                        <th style="min-width: 30px;">ID</th>
                         <th>PRODUTO</th>
                         <th>PREÇO</th>
                         <th>DESCRIÇÃO</th>
@@ -173,6 +173,7 @@
         align-items: center;
         flex-direction: column;
         gap: 10px;
+        overflow-x: auto;
     }
     .view-products .table{
         width: 100%;
@@ -184,6 +185,7 @@
     }
     table th{
         border: 1px solid black;
+        min-width: 100px;
     }
     table tr{
         border-bottom: 1px solid black;

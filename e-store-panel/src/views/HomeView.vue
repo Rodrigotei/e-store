@@ -40,7 +40,7 @@
     
 <template>
     <div class="container">
-        <RouterLink class="box">
+        <RouterLink class="box" to="/">
             <p><i class="fa-solid fa-users"></i></p>
             <p>Acessos Mensal: <b>{{ qtdClientes }}</b></p>
         </RouterLink>

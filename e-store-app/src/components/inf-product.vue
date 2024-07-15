@@ -1,6 +1,10 @@
 <script setup>
     import { ref, watch } from 'vue';
     import { useRoute } from 'vue-router';
+    import { useGlobal } from '@/global';
+
+    const GlobalVariables = useGlobal();
+
     const route = useRoute();
     let showForm = ref(false);
     let nameUser = ref('');
@@ -13,7 +17,7 @@
     }
    
     function mensageAbout(){
-        const number = 'xxxxxxxxxxxxx';
+        const number = GlobalVariables.numberPhone;
         if(nameUser.value.length > 0 && mensageUser.value.length > 0){
             let nome = nameUser.value.trim();
             let mensagem = mensageUser.value.trim();

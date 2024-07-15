@@ -78,7 +78,7 @@
         }
     }
     async function deleteProduct(id){
-        let response = await fetch(`h${GlobalVariables.apiUrl}`,{
+        let response = await fetch(`${GlobalVariables.apiUrl}`,{
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({'deleteProduct':true, 'idProduto':id, 'idUser': userCode.value})
@@ -120,7 +120,7 @@
             productsCart.prod.forEach(product=>{
                 produto += '%0A'+product.nome.trim()+'%0APreço: *R$ '+product.preco+'* %0AQuantidade: *'+qtdCart[product.id]+' und*%0A---------------------'
             })
-            let mensagemTotal = `Olá RT.CODE%0AEste é o meu pedido:%0A${produto}%0ATotal: *R$ ${totalCarrinho.value}*%0ANome Cliente: *${nameClient}*%0AEndereço: ${data.address}, ${data.number}, ${data.district}%0AObservação: ${data.obs}`
+            let mensagemTotal = `Olá RT.CODE%0AEste é o meu pedido:%0A${produto}%0ANome Cliente: *${nameClient}*%0AEndereço: ${data.address}, ${data.number}, ${data.district}%0AObservação: ${data.obs}%0ATotal: *R$ ${totalCarrinho.value}*`
             window.open(`https://wa.me/${number}?text=${mensagemTotal}`);
         }
     }

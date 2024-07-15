@@ -35,7 +35,7 @@
 				let dateExpire =    data.toUTCString();
     			document.cookie = 'logado=true; expires= '+dateExpire;				
 				successMessage.remove()
-				location.href = '/';
+				location.href = '/estoredashboard';
 			}, 2000);
 		}else{
 			const errorMessage = document.createElement('div');

@@ -92,7 +92,7 @@
             <div class="table" v-if="categories">
                 <table>
                     <tr>
-                        <th>ID</th>
+                        <th style="min-width: 30px;">ID</th>
                         <th>CATEGORIA</th>
                         <th>IMAGEM</th>
                         <th>AÇÕES</th>
@@ -139,6 +139,7 @@
         align-items: center;
         flex-direction: column;
         gap: 10px;
+        overflow-x: auto;
     }
     .view-categories .table{
         width: 100%;
@@ -150,6 +151,7 @@
     }
     table th{
         border: 1px solid black;
+        min-width: 100px;
     }
     table tr{
         border-bottom: 1px solid black;
